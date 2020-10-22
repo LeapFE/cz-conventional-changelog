@@ -23,7 +23,10 @@ var maxSummaryLength = function(options, answers) {
 
 var filterSubject = function(subject, disableSubjectLowerCase) {
   subject = subject.trim();
-  if (!disableSubjectLowerCase && subject.charAt(0).toLowerCase() !== subject.charAt(0)) {
+  if (
+    !disableSubjectLowerCase &&
+    subject.charAt(0).toLowerCase() !== subject.charAt(0)
+  ) {
     subject =
       subject.charAt(0).toLowerCase() + subject.slice(1, subject.length);
   }
@@ -71,7 +74,7 @@ module.exports = function(options) {
         {
           type: 'list',
           name: 'type',
-          message: "Select the type of change that you're committing:",
+          message: '选择您要提交的类型:',
           choices: choices,
           default: options.defaultType
         },
@@ -79,7 +82,7 @@ module.exports = function(options) {
           type: 'input',
           name: 'scope',
           message:
-            'What is the scope of this change (e.g. component or file name): (press enter to skip)',
+            '输入本次提交影响的范围 (比如某个组件或者文件): (按 enter 跳过)',
           default: options.defaultScope,
           filter: function(value) {
             return options.disableScopeLowerCase
@@ -91,27 +94,35 @@ module.exports = function(options) {
           type: 'input',
           name: 'subject',
           message: function(answers) {
+            debugger;
             return (
-              'Write a short, imperative tense description of the change (max ' +
+              '为本次更改填写一个标题(可输入 ' +
               maxSummaryLength(options, answers) +
-              ' chars):\n'
+              ' 字符):\n'
             );
           },
           default: options.defaultSubject,
           validate: function(subject, answers) {
-            var filteredSubject = filterSubject(subject, options.disableSubjectLowerCase);
+            var filteredSubject = filterSubject(
+              subject,
+              options.disableSubjectLowerCase
+            );
             return filteredSubject.length == 0
-              ? 'subject is required'
+              ? '标题为必填项'
               : filteredSubject.length <= maxSummaryLength(options, answers)
               ? true
-              : 'Subject length must be less than or equal to ' +
+              : '标题长度必须小于等于 ' +
                 maxSummaryLength(options, answers) +
-                ' characters. Current length is ' +
+                ' 字符. 但是您输入了 ' +
                 filteredSubject.length +
-                ' characters.';
+                ' 字符.';
           },
           transformer: function(subject, answers) {
-            var filteredSubject = filterSubject(subject, options.disableSubjectLowerCase);
+            debugger;
+            var filteredSubject = filterSubject(
+              subject,
+              options.disableSubjectLowerCase
+            );
             var color =
               filteredSubject.length <= maxSummaryLength(options, answers)
                 ? chalk.green
@@ -125,67 +136,34 @@ module.exports = function(options) {
         {
           type: 'input',
           name: 'body',
-          message:
-            'Provide a longer description of the change: (press enter to skip)\n',
+          message: '为本地更改填写一个详细的描述: (按 enter 跳过)\n',
           default: options.defaultBody
         },
         {
           type: 'confirm',
-          name: 'isBreaking',
-          message: 'Are there any breaking changes?',
+          name: 'hasIssue',
+          message: '本次更改是否有与之关联的激活的 issue?',
           default: false
         },
         {
           type: 'input',
-          name: 'breakingBody',
-          default: '-',
-          message:
-            'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself:\n',
+          name: 'issueID',
+          message: '填写 issue 标识(e.g. "fix #123", "re #123".):\n',
           when: function(answers) {
-            return answers.isBreaking && !answers.body;
-          },
-          validate: function(breakingBody, answers) {
-            return (
-              breakingBody.trim().length > 0 ||
-              'Body is required for BREAKING CHANGE'
-            );
-          }
-        },
-        {
-          type: 'input',
-          name: 'breaking',
-          message: 'Describe the breaking changes:\n',
-          when: function(answers) {
-            return answers.isBreaking;
-          }
-        },
-
-        {
-          type: 'confirm',
-          name: 'isIssueAffected',
-          message: 'Does this change affect any open issues?',
-          default: options.defaultIssues ? true : false
-        },
-        {
-          type: 'input',
-          name: 'issuesBody',
-          default: '-',
-          message:
-            'If issues are closed, the commit requires a body. Please enter a longer description of the commit itself:\n',
-          when: function(answers) {
-            return (
-              answers.isIssueAffected && !answers.body && !answers.breakingBody
-            );
-          }
-        },
-        {
-          type: 'input',
-          name: 'issues',
-          message: 'Add issue references (e.g. "fix #123", "re #123".):\n',
-          when: function(answers) {
-            return answers.isIssueAffected;
+            return answers.hasIssue;
           },
           default: options.defaultIssues ? options.defaultIssues : undefined
+        },
+        {
+          type: 'input',
+          name: 'issue 描述',
+          default: '-',
+          message: '简短描述一下这个 issue: (按 enter 跳过)\n',
+          when: function(answers) {
+            return (
+              answers.hasIssue && answers.issueID
+            );
+          }
         }
       ]).then(function(answers) {
         var wrapOptions = {

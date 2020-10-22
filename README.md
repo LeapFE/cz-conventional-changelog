@@ -32,9 +32,9 @@ Like commitizen, you specify the configuration of cz-conventional-changelog thro
             "defaultIssues": "",
             "types": {
               ...
-              "feat": {
-                "description": "A new feature",
-                "title": "Features"
+             "feat": {
+                "description": "添加了一个新特性",
+                "title": "特性"
               },
               ...
             }
