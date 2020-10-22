@@ -94,7 +94,6 @@ module.exports = function(options) {
           type: 'input',
           name: 'subject',
           message: function(answers) {
-            debugger;
             return (
               '为本次更改填写一个标题(可输入 ' +
               maxSummaryLength(options, answers) +
@@ -118,7 +117,6 @@ module.exports = function(options) {
                 ' 字符.';
           },
           transformer: function(subject, answers) {
-            debugger;
             var filteredSubject = filterSubject(
               subject,
               options.disableSubjectLowerCase
