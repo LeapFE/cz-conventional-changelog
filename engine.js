@@ -4,6 +4,7 @@ var wrap = require('word-wrap');
 var map = require('lodash.map');
 var longest = require('longest');
 var chalk = require('chalk');
+const { assert } = require('chai');
 
 var filter = function(array) {
   return array.filter(function(x) {
@@ -158,9 +159,7 @@ module.exports = function(options) {
           default: '-',
           message: '简短描述一下这个 issue: (按 enter 跳过)\n',
           when: function(answers) {
-            return (
-              answers.hasIssue && answers.issueID
-            );
+            return answers.hasIssue && answers.issueID;
           }
         }
       ]).then(function(answers) {
@@ -181,15 +180,27 @@ module.exports = function(options) {
         // Wrap these lines at options.maxLineWidth characters
         var body = answers.body ? wrap(answers.body, wrapOptions) : false;
 
-        var breaking = answers.hasIssue
-          ? 'ISSUE ID: ' + answers.issueID
-          : '';
+        var issueLink =
+          typeof options.issueLinkTemplate === 'string'
+            ? options.issueURLTemplate.replace(/{\w+}$/, answers.issueID)
+            : '';
 
-        breaking = breaking ? wrap(breaking, wrapOptions) : false;
+        var issue =
+          answers.hasIssue && issueLink
+            ? `ISSUE ID: ${answers.issueID} ${issueLink}`
+            : answers.hasIssue
+            ? `ISSUE ID: ${answers.issueID}`
+            : '';
 
-        var issues = answers.issueDesc ? wrap(answers.issueDesc, wrapOptions) : false;
+        issue = issue ? wrap(issue, wrapOptions) : false;
 
-        commit(filter([head, body, breaking, issues]).join('\n\n'));
+        var issues = answers.issueDesc
+          ? wrap(answers.issueDesc, wrapOptions)
+          : false;
+
+        var commitMsg = filter([head, body, issue, issues]).join('\n\n');
+
+        commit(commitMsg);
       });
     }
   };
