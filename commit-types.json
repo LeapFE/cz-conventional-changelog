@@ -1,46 +1,46 @@
 {
   "types": {
-    "特性": {
+    "feat": {
       "description": "添加了一个新特性",
       "title": "特性"
     },
-    "Bug 修复": {
+    "fix": {
       "description": "修复了一个 Bug",
       "title": "Bug 修复"
     },
-    "文档": {
+    "docs": {
       "description": "更新了文档",
       "title": "文档"
     },
-    "代码风格": {
+    "style": {
       "description": "修复比如了【空格】【分号】【格式化】等代码风格问题(并没有影响代码逻辑)",
       "title": "代码风格"
     },
-    "样式": {
+    "css": {
       "description": "更改了页面样式",
       "title": "样式"
     },
-    "代码重构": {
+    "refactor": {
       "description": "重构了一些代码(既没有修复 Bug 也没有增加新特性)",
       "title": "代码重构"
     },
-    "性能优化": {
+    "perf": {
       "description": "做了一些性能优化",
       "title": "性能优化"
     },
-    "测试": {
+    "test": {
       "description": "添加或修改了测试用例",
       "title": "测试"
     },
-    "构建": {
+    "build": {
       "description": "更改了构建脚本或者依赖",
       "title": "构建"
     },
-    "杂务": {
+    "chore": {
       "description": "其他的更改但是并不影响源码",
       "title": "杂务"
     },
-    "撤销": {
+    "revert": {
       "description": "撤销了上一次提交",
       "title": "撤销"
     }
