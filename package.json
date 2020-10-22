@@ -1,6 +1,6 @@
 {
   "name": "leap-cz-conventional-changelog",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Commitizen adapter following the conventional-changelog format.",
   "main": "index.js",
   "scripts": {
