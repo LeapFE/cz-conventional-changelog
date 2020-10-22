@@ -154,7 +154,7 @@ module.exports = function(options) {
         },
         {
           type: 'input',
-          name: 'issue 描述',
+          name: 'issueDesc',
           default: '-',
           message: '简短描述一下这个 issue: (按 enter 跳过)\n',
           when: function(answers) {
@@ -181,14 +181,13 @@ module.exports = function(options) {
         // Wrap these lines at options.maxLineWidth characters
         var body = answers.body ? wrap(answers.body, wrapOptions) : false;
 
-        // Apply breaking change prefix, removing it if already present
-        var breaking = answers.breaking ? answers.breaking.trim() : '';
-        breaking = breaking
-          ? 'BREAKING CHANGE: ' + breaking.replace(/^BREAKING CHANGE: /, '')
+        var breaking = answers.hasIssue
+          ? 'ISSUE ID: ' + answers.issueID
           : '';
+
         breaking = breaking ? wrap(breaking, wrapOptions) : false;
 
-        var issues = answers.issues ? wrap(answers.issues, wrapOptions) : false;
+        var issues = answers.issueDesc ? wrap(answers.issueDesc, wrapOptions) : false;
 
         commit(filter([head, body, breaking, issues]).join('\n\n'));
       });
