@@ -1,13 +1,14 @@
 {
   "name": "leap-cz-conventional-changelog",
-  "version": "0.0.0-semantically-released.0",
+  "version": "0.0.1",
   "description": "Commitizen adapter following the conventional-changelog format.",
   "main": "index.js",
   "scripts": {
     "commit": "git-cz",
     "test": "mocha *.test.js",
-    "c": "prettier --write *.js",
-    "semantic-release": "semantic-release"
+    "format": "prettier --write *.js",
+    "semantic-release": "semantic-release",
+    "release": "np patch --tag=latest --yolo --no-2fa"
   },
   "homepage": "https://github.com/LeapFE/cz-conventional-changelog",
   "repository": {
@@ -35,6 +36,7 @@
     "cosmiconfig": "^5.2.1",
     "mocha": "^6.2.0",
     "mock-require": "^3.0.3",
+    "np": "^6.5.0",
     "prettier": "^1.15.3",
     "semantic-release": "^15.13.3",
     "semver": "^6.2.0"
