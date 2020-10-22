@@ -4,7 +4,6 @@ var wrap = require('word-wrap');
 var map = require('lodash.map');
 var longest = require('longest');
 var chalk = require('chalk');
-const { assert } = require('chai');
 
 var filter = function(array) {
   return array.filter(function(x) {
@@ -181,7 +180,7 @@ module.exports = function(options) {
         var body = answers.body ? wrap(answers.body, wrapOptions) : false;
 
         var issueLink =
-          typeof options.issueLinkTemplate === 'string'
+          typeof options.issueURLTemplate === 'string'
             ? options.issueURLTemplate.replace(/{\w+}$/, answers.issueID)
             : '';
 
